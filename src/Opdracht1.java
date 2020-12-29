@@ -12,6 +12,7 @@ public class Opdracht1 {
         if ((path = selectFie()) != null) {
             try {
                 String content = readFile(path);
+                checkSyntax(content);
                 System.out.println(content);
             } catch (IOException e) {
                 System.out.println("Unable to open file.");
@@ -20,15 +21,26 @@ public class Opdracht1 {
     }
 
     public static void checkSyntax(String content) {
-        Stack checkStack = new Stack<Character>();
-        HashMap<String, String> brackets = new HashMap<>();
-        brackets.put(")", "(");
-        brackets.put("]", "[");
-        brackets.put("}", "{");
+        char expected;
+        boolean endReached = true;
+        Stack<Character> checkStack = new Stack<>();
+        HashMap<Character, Character> brackets = new HashMap<>();
+        brackets.put(')', '(');
+        brackets.put(']', '[');
+        brackets.put('}', '{');
         for (char c: content.toCharArray()) {
             if (c == '(' || c == '[' || c == '{') {
                 checkStack.push(c);
+            } else if (c == ')' || c == ']' || c == '}'){
+                if (!(checkStack.pop() == (expected = brackets.get(c)))) {
+                    System.out.println("Syntax incorrect. " + expected + " expected.");
+                    endReached = false;
+                    break;
+                }
             }
+        }
+        if (endReached && !checkStack.empty()){
+            System.out.println(checkStack.pop() + " is never closed.");
         }
     }
 
