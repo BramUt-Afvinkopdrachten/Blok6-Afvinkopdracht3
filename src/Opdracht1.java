@@ -13,7 +13,6 @@ public class Opdracht1 {
             try {
                 String content = readFile(path);
                 checkSyntax(content);
-                System.out.println(content);
             } catch (IOException e) {
                 System.out.println("Unable to open file.");
             }
@@ -41,6 +40,8 @@ public class Opdracht1 {
         }
         if (endReached && !checkStack.empty()){
             System.out.println(checkStack.pop() + " is never closed.");
+        } else if (endReached){
+            System.out.println("No syntax errors found.");
         }
     }
 
